@@ -1,3 +1,4 @@
+// Controladores para manejar las rutas de autenticación
 import { Request, Response } from "express";
 import {
   forgotUserPassword,
@@ -10,6 +11,7 @@ import {
   verifyUserEmail
 } from "./auth.service";
 
+// funcion para registrar un nuevo usuario
 export const register = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
@@ -21,6 +23,7 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
+// funcion para iniciar sesion
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -32,6 +35,7 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
+// funcion para cerrar sesion
 export const logout = async (req: Request, res: Response) => {
   try {
     const { refreshToken } = req.body;
@@ -43,6 +47,7 @@ export const logout = async (req: Request, res: Response) => {
   }
 };
 
+// funcion para actualizar los tokens de usuario
 export const refreshTokens = async (req: Request, res: Response) => {
   try {
     const { refreshToken } = req.body;
@@ -54,6 +59,7 @@ export const refreshTokens = async (req: Request, res: Response) => {
   }
 };
 
+// funcion para solicitar un cambio de password
 export const forgotPassword = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
@@ -65,6 +71,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
   }
 };
 
+// funcion para resetear el password del usuario
 export const resetPassword = async (req: Request, res: Response) => {
   try {
     const { token, password } = req.body;
@@ -76,6 +83,7 @@ export const resetPassword = async (req: Request, res: Response) => {
   }
 };
 
+// funcion para enviar un email de verificacion al usuario
 export const sendVerificationEmail = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
@@ -87,6 +95,7 @@ export const sendVerificationEmail = async (req: Request, res: Response) => {
   }
 };
 
+// funcion para verificar el email del usuario
 export const verifyEmail = async (req: Request, res: Response) => {
   try {
     const { token } = req.body;

@@ -1,7 +1,9 @@
+// Controlador para manejar las solicitudes relacionadas con los objetivos de ahorro
 import { Response } from "express";
 import { AuthRequest } from "../../middleware/auth.middleware";
 import { createGoal, deleteGoal, getGoals, updateGoal } from "./goals.service";
 
+// funcion para listar los objetivos de ahorro del usuario -------------------------------------------------------
 export const listGoals = async (req: AuthRequest, res: Response) => {
   try {
     const goals = await getGoals(req.user!._id.toString());
@@ -12,6 +14,7 @@ export const listGoals = async (req: AuthRequest, res: Response) => {
   }
 };
 
+// funcion para crear un nuevo objetivo de ahorro ----------------------------------------------------------------
 export const storeGoal = async (req: AuthRequest, res: Response) => {
   try {
     const goal = await createGoal(req.user!._id.toString(), req.body);
@@ -22,6 +25,7 @@ export const storeGoal = async (req: AuthRequest, res: Response) => {
   }
 };
 
+// funcion para actualizar un objetivo de ahorro existente ----------------------------------------------------------
 export const patchGoal = async (req: AuthRequest, res: Response) => {
   try {
     const goal = await updateGoal(req.user!._id.toString(), req.params.id as string, req.body);
@@ -32,6 +36,7 @@ export const patchGoal = async (req: AuthRequest, res: Response) => {
   }
 };
 
+// funcion para eliminar un objetivo de ahorro existente ----------------------------------------------------------
 export const removeGoal = async (req: AuthRequest, res: Response) => {
   try {
     await deleteGoal(req.user!._id.toString(), req.params.id as string);

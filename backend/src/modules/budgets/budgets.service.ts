@@ -1,9 +1,12 @@
+// servicio para manejar la lógica de los presupuestos
 import { Budget } from "../../models/budget.model";
 
+// funcion para obtener los presupuestos de un usuario ----------------------------------------------------------------
 export const getBudgets = (userId: string) => {
   return Budget.find({ user: userId });
 };
 
+// funcion para crear un nuevo presupuesto ----------------------------------------------------------------
 export const createBudget = (userId: string, data: { amount: number; month: number; year: number }) => {
   return Budget.create({
     ...data,
@@ -11,6 +14,7 @@ export const createBudget = (userId: string, data: { amount: number; month: numb
   });
 };
 
+// funcion para actualizar un presupuesto existente ----------------------------------------------------------
 export const updateBudget = async (
   userId: string,
   id: string,

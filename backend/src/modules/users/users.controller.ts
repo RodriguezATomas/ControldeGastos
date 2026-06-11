@@ -1,7 +1,10 @@
+// controlador de usuarios, se encarga de manejar las peticiones relacionadas con los usuarios
+
 import { Response } from "express";
 import { AuthRequest } from "../../middleware/auth.middleware";
 import { createUser, deleteUser, getUserById, getUsers, updateUser } from "./users.service";
 
+// funcion que devuelve la lista de usuarios ---------------------------------------------------------------------
 export const listUsers = async (_req: AuthRequest, res: Response) => {
   try {
     const users = await getUsers();
@@ -12,6 +15,7 @@ export const listUsers = async (_req: AuthRequest, res: Response) => {
   }
 };
 
+// funcion que devuelve un usuario por su id ---------------------------------------------------------------------
 export const findUser = async (req: AuthRequest, res: Response) => {
   try {
     const user = await getUserById(req.params.id as string);
@@ -22,6 +26,7 @@ export const findUser = async (req: AuthRequest, res: Response) => {
   }
 };
 
+// funcion que crea un nuevo usuario ---------------------------------------------------------------------
 export const storeUser = async (req: AuthRequest, res: Response) => {
   try {
     const user = await createUser(req.body);
@@ -32,6 +37,7 @@ export const storeUser = async (req: AuthRequest, res: Response) => {
   }
 };
 
+// funcion que actualiza un usuario por su id ---------------------------------------------------------------------
 export const patchUser = async (req: AuthRequest, res: Response) => {
   try {
     const user = await updateUser(req.params.id as string, req.body);
@@ -42,6 +48,7 @@ export const patchUser = async (req: AuthRequest, res: Response) => {
   }
 };
 
+// funcion que elimina un usuario por su id ---------------------------------------------------------------------
 export const removeUser = async (req: AuthRequest, res: Response) => {
   try {
     await deleteUser(req.params.id as string);

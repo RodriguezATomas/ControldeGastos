@@ -1,7 +1,9 @@
+// servicio para manejar la lógica de negocio relacionada con el panel de control
 import mongoose from "mongoose";
 import { Budget } from "../../models/budget.model";
 import { Expense } from "../../models/expense.model";
 
+// funcion para obtener los datos del panel de control ----------------------------------------------------------------
 export const getDashboard = async (userId: string, month?: string) => {
   const user = new mongoose.Types.ObjectId(userId);
   const now = month && /^\d{4}-\d{2}$/.test(month) ? new Date(`${month}-01T00:00:00`) : new Date();
@@ -15,6 +17,7 @@ export const getDashboard = async (userId: string, month?: string) => {
     user
   };
 
+  // realiza las agregaciones para calcular las métricas del panel de control
   const [metrics] = await Expense.aggregate([
     { $match: monthMatch },
     {
@@ -27,6 +30,7 @@ export const getDashboard = async (userId: string, month?: string) => {
     }
   ]);
 
+  // agregación para calcular el gasto por categoría en el mes seleccionado
   const gastosPorCategoria = await Expense.aggregate([
     { $match: monthMatch },
     {
@@ -48,6 +52,7 @@ export const getDashboard = async (userId: string, month?: string) => {
     { $sort: { total: -1 } }
   ]);
 
+  // agregación para calcular la evolución mensual del gasto en el año actual
   const evolucionMensual = await Expense.aggregate([
     { $match: monthMatch },
     {
@@ -69,11 +74,15 @@ export const getDashboard = async (userId: string, month?: string) => {
       }
     }
   ]);
+
+  // consulta para obtener el presupuesto mensual del usuario en el mes seleccionado
   const budget = await Budget.findOne({
     month: now.getMonth() + 1,
     user,
     year: now.getFullYear()
   }).sort({ createdAt: -1 });
+
+  // calcula el presupuesto disponible y el porcentaje de presupuesto usado en base al presupuesto mensual y el total gastado
   const presupuestoMensual = budget?.amount || 0;
   const presupuestoDisponible = presupuestoMensual - (metrics?.totalGastado || 0);
   const presupuestoUsado = presupuestoMensual > 0 ? ((metrics?.totalGastado || 0) / presupuestoMensual) * 100 : 0;

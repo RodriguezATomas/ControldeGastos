@@ -20,6 +20,7 @@ const signToken = (user: IUser, secret: string, expiresIn: string) => {
   );
 };
 
+// funcion para crear los tokens de acceso y refresh para un usuario ---------------------------------------
 const createTokens = async (user: IUser) => {
   const accessToken = signToken(user, accessSecret(), process.env.JWT_ACCESS_EXPIRES_IN || "15m");
   const refreshToken = signToken(user, refreshSecret(), process.env.JWT_REFRESH_EXPIRES_IN || "7d");
@@ -35,6 +36,7 @@ const createTokens = async (user: IUser) => {
   };
 };
 
+// funcion para registrar un nuevo usuario ------------------------------------------------------------------
 export const registerUser = async (name: string, email: string, password: string) => {
   const exists = await User.findOne({ email });
 
@@ -57,6 +59,7 @@ export const registerUser = async (name: string, email: string, password: string
   };
 };
 
+// funcion para iniciar sesion --------------------------------------------------------------------------
 export const loginUser = async (email: string, password: string) => {
   const user = await User.findOne({ email });
 
@@ -78,10 +81,12 @@ export const loginUser = async (email: string, password: string) => {
   };
 };
 
+// funcion para cerrar sesion --------------------------------------------------------------------------
 export const logoutUser = async (refreshToken: string) => {
   await Token.deleteOne({ token: refreshToken });
 };
 
+// funcion para actualizar los tokens de usuario -------------------------------------------------------
 export const refreshUserTokens = async (refreshToken: string) => {
   const storedToken = await Token.findOne({ token: refreshToken });
 
@@ -101,6 +106,7 @@ export const refreshUserTokens = async (refreshToken: string) => {
   return createTokens(user);
 };
 
+// funcion para solicitar un cambio de password ----------------------------------------------------------------
 export const forgotUserPassword = async (email: string) => {
   const user = await User.findOne({ email });
 
@@ -117,6 +123,7 @@ export const forgotUserPassword = async (email: string) => {
   };
 };
 
+// funcion para resetear el password del usuario ----------------------------------------------------------------
 export const resetUserPassword = async (token: string, password: string) => {
   const user = await User.findOne({
     resetPasswordToken: token,
@@ -133,6 +140,7 @@ export const resetUserPassword = async (token: string, password: string) => {
   await user.save();
 };
 
+// funcion para enviar un email de verificacion al usuario --------------------------------------------------------
 export const sendUserVerificationEmail = async (email: string) => {
   const user = await User.findOne({ email });
 
@@ -148,6 +156,7 @@ export const sendUserVerificationEmail = async (email: string) => {
   };
 };
 
+// funcion para verificar el email del usuario ----------------------------------------------------------------
 export const verifyUserEmail = async (token: string) => {
   const user = await User.findOne({ emailVerificationToken: token });
 

@@ -1,3 +1,4 @@
+// 
 import { Router } from "express";
 import authRoutes from "../modules/auth/auth.routes";
 import budgetRoutes from "../modules/budgets/budgets.routes";
@@ -10,6 +11,7 @@ import userRoutes from "../modules/users/users.routes";
 
 const router = Router();
 
+// definición de rutas principales, cada una delega a las rutas específicas de cada módulo
 router.use("/auth", authRoutes);
 router.use("/users", userRoutes);
 router.use("/categories", categoryRoutes);
